@@ -100,7 +100,12 @@ The four **bold data files** are the primary content layer. The inline-constant 
 
 ## Republish flow
 
-Edit → commit to `main` (Lovable auto-syncs; or commit directly on github.com) → GitHub Actions builds `dist/client` → deploys to GitHub Pages. Check the repo's **Actions** tab: a green check = site updated; a red ✕ = a syntax error to fix in the file. The version archive at `/versions/` is separate and only grows when you freeze a version (add a `{ref,name,date,desc}` entry to `VERSIONS_JSON` in the workflow).
+**Normal path (one click):** open `/edit` in Lovable → change text → **Save & publish**. The commit and the rebuild happen on their own; the button links to the Actions run.
+
+**Manual paths:** commit to `main` from Lovable's GitHub sync, or edit a file directly on github.com. Either way GitHub Actions builds `dist/client` and deploys to GitHub Pages. Check the repo's **Actions** tab: a green check = site updated; a red ✕ = a syntax error to fix in the file. The version archive at `/versions/` is separate and only grows when you freeze a version (add a `{ref,name,date,desc}` entry to `VERSIONS_JSON` in the workflow).
+
+If **Save & publish** returns a 403, the GitHub connector's token lacks **Contents: Read and write** on the repo — regenerate a fine-grained token with that permission and reconnect the connector. A 409 means the file changed on GitHub since the editor loaded; reload `/edit` and reapply the change.
+
 
 ## Quick reference: common edits
 
