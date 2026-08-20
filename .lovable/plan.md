@@ -1,31 +1,56 @@
-# Add a visible "Edit this deck" link on the site
+# One-click "Save & Publish" in the deck editor
 
 ## Goal
-Make the `/edit/` page discoverable from the published site itself, so you never need to remember or copy the URL — just click a link on the deck to open the in-browser editor.
+After editing text in the editor, a single button commits the change to GitHub and triggers the republish. No downloading JSON, no pasting into GitHub, no manual steps.
 
-## Where the link goes
-The site already has a footer in `src/components/site/DeckBody.tsx` (navy bar at the bottom with two lines of copy). The edit preview page renders `DeckBody` with `chrome={false}`, which hides the top nav and section nav — so gating the new link on `chrome` keeps it off the editor's own preview (no self-referential link).
+## How it works
+The editor at `/edit/` gets a **Save & Publish** button. Clicking it:
 
-## Changes
+1. Sends the current overrides to a Lovable server function.
+2. The server function commits `src/content/deck.overrides.json` to the `main` branch of `archer2005byte/secure-plant-vision` using the GitHub connector.
+3. GitHub Actions sees the commit, rebuilds, and republishes GitHub Pages.
+4. The button reports progress in-place: *Saving → Committed → Publishing (~1 min)*, with a link to the Actions run.
 
-### 1. `src/components/site/DeckBody.tsx`
-- Import `basePath` from `@/content/deck.config`.
-- Add an "Edit this deck" link to the footer, shown only when `chrome` is true.
-- Place it as a third element in the existing footer flex row (below the two copy lines on mobile, inline on desktop).
-- The link uses `target="_blank" rel="noopener"` and points to `${basePath}edit/` so it resolves correctly on both:
-  - Lovable preview (`/` → `/edit/`)
-  - GitHub Pages (`/secure-plant-vision/` → `/secure-plant-vision/edit/`)
-- Small, muted styling using existing design tokens (`text-navy-muted`, hover `text-ey-yellow`), with a `Pencil` icon from `lucide-react` (already a project dependency).
+You click one button; steps 2-4 happen on their own.
 
-### 2. No other files change
-- `deck.config.ts` already exports `basePath` and `overridesEditUrl` — no config edits needed.
-- The `presentation-content` skill already documents the `/edit/` flow; no update required.
+## Where it works
+Editing happens in the **Lovable editor** — that is where the server lives, so that is where the one-click button is active.
 
-## Why this is safe
-- The footer link is gated by `chrome`, so it never appears on the `/edit/` preview.
-- `basePath` is derived from `deck.config.repoName`, so a template clone gets the right link automatically with no manual edits.
-- The edit route is already prerendered (the build asserts `dist/client/edit/index.html`), so the link always points to a live page.
+On the public GitHub Pages copy of `/edit/` there is no server, so the button cannot commit there. That copy will show a short note ("Open this deck in Lovable to save changes") instead of a dead button, and keeps Copy JSON / Download JSON as a manual escape hatch.
+
+## Colleagues
+Since saving runs through Lovable, colleagues who need to edit and publish must be invited to the Lovable project. Once invited, they use the same editor and the same single button — the GitHub credential stays on the workspace connection and is never handed out.
+
+## Steps
+
+### 1. Connect GitHub
+Link the GitHub connector to this project so the server function can commit. This opens a connect card; authorise the `archer2005byte` account with repository write access.
+
+### 2. Server function — `src/lib/publishDeck.functions.ts`
+- `publishDeck` created with `createServerFn({ method: "POST" })`.
+- Input validated with Zod: an object of `string -> string` overrides, plus an optional commit message.
+- Handler reads `LOVABLE_API_KEY` and `GITHUB_API_KEY` inside the handler body, then, through the connector gateway:
+  - `GET repos/{owner}/{repo}/contents/src/content/deck.overrides.json?ref=main` to read the current file SHA.
+  - `PUT` the same path with the new base64 content, the SHA, and the commit message.
+- Non-OK gateway responses are surfaced with status and body so failures are readable, not a generic 500.
+- Returns the commit URL and the repo's Actions URL.
+
+### 3. Editor UI — `src/routes/edit.tsx`
+- Add a primary **Save & Publish** button in the editor toolbar, next to the existing actions.
+- Wire it with `useServerFn(publishDeck)`, passing `contentStore.getOverrides()`.
+- Button states: idle / saving / success (with "View build" link to Actions) / error (shows the returned message).
+- Detect the static build: when running on GitHub Pages the button is replaced by the "Open in Lovable to save" note. Detection uses the existing `basePath` from `deck.config.ts` compared against `window.location.pathname`, evaluated after hydration.
+- Keep **Copy JSON** and **Download JSON**; drop the now-redundant **Commit on GitHub** button from the Lovable view (it stays in the static-site fallback).
+
+### 4. Local file stays in sync
+After a successful commit, GitHub is the source of truth and Lovable's GitHub sync pulls the new `deck.overrides.json` back into the project automatically, so the editor and the repo do not drift.
+
+## Technical notes
+- The commit goes through the Lovable connector gateway at `https://connector-gateway.lovable.dev/github/...`; no GitHub token is stored in the app or in the browser.
+- `LOVABLE_API_KEY` and `GITHUB_API_KEY` are read inside `.handler()`, never at module scope, and never reach client code.
+- `publishDeck.functions.ts` stays a thin wrapper: only imports, types, and the exported server function; the gateway helper lives in a separate `.server.ts` module.
+- No change to `vite.config.ts`, the Actions workflow, or the deployed site's structure.
 
 ## Verification
-- `bun run build` succeeds.
-- Playwright: open `http://localhost:8080/`, confirm the "Edit this deck" link is visible in the footer and clicking it navigates to `/edit/`.
+- `bun run build` succeeds and still prerenders `/` and `/edit/`.
+- In the Lovable preview: change one string, click Save & Publish, confirm a new commit appears on `main` and the Actions run goes green.
