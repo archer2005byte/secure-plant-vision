@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
-import { Download, RotateCcw, Save, Search, ClipboardCopy, Check } from "lucide-react";
+import { Download, RotateCcw, Save, Search, ClipboardCopy, Check, Github } from "lucide-react";
 
 import { DeckBody } from "@/components/site/DeckBody";
 import { contentStore } from "@/content/contentStore";
-import { deckConfig } from "@/content/deck.config";
+import { deckConfig, overridesEditUrl } from "@/content/deck.config";
 
 export const Route = createFileRoute("/edit")({
   ssr: false,
@@ -112,7 +112,8 @@ function EditorPage() {
           <h1 className="mt-1 text-lg font-semibold">{deckConfig.repoName}</h1>
           <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
             Edit any text below. The deck on the right updates as you type. Nothing is published
-            until you download <code>deck.overrides.json</code> and commit it.
+            until you paste the JSON into <code>deck.overrides.json</code> on GitHub and commit
+            it — the site rebuilds itself from there.
           </p>
         </header>
 
@@ -141,6 +142,15 @@ function EditorPage() {
             {copied ? <Check className="h-3.5 w-3.5" /> : <ClipboardCopy className="h-3.5 w-3.5" />}
             {copied ? "Copied" : "Copy JSON"}
           </button>
+          <a
+            href={overridesEditUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1.5 rounded-md border border-hairline px-3 py-2 text-xs font-semibold"
+          >
+            <Github className="h-3.5 w-3.5" />
+            Commit on GitHub
+          </a>
           <button
             type="button"
             onClick={() => contentStore.clearDraft()}
