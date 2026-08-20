@@ -14,7 +14,7 @@ The site publishes to GitHub Pages at `https://archer2005byte.github.io/secure-p
 
 Text is now overridable without touching components. Prefer this order:
 
-1. **Browser editor at `/edit`** — the user edits text visually, downloads `deck.overrides.json`, and commits it. This is the normal workflow; point them here.
+1. **Browser editor at `/edit`, opened in Lovable** — the user edits text visually and presses **Save & publish**. That single button commits `deck.overrides.json` to `main` via a server function (`src/lib/publishDeck.functions.ts` → `publishDeck.server.ts`, GitHub connector gateway), and GitHub Actions republishes on its own. This is the normal workflow; point them here. The button is hidden on the GitHub Pages copy of `/edit/`, which is static and has no server — there the fallback is Copy JSON + **Commit on GitHub**.
 2. **`src/content/deck.overrides.json`** — a flat map of `namespace.path.to.string` -> replacement text. Overrides always win over the defaults in code. Editing this file is safe and never breaks layout.
 3. **Defaults in code** — only when the *template itself* should change: `src/content/sectionCopy.ts` (section eyebrows, headings, leads, CTAs, page meta, footer) and the data files / inline `defineContent` blocks listed below.
 
