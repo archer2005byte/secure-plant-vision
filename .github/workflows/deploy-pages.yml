@@ -39,6 +39,8 @@ jobs:
         uses: actions/configure-pages@v6
 
       - name: Build current site
+        env:
+          VITE_PUBLIC_BASE: /secure-plant-vision/
         run: |
           bun install --frozen-lockfile
           bun run build
