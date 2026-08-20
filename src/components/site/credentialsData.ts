@@ -231,7 +231,7 @@ const programmes__base: Programme[] = [
 export const programmes = defineContent("credentials.programmes", programmes__base);
 
 
-export const powerEngagements = [
+const powerEngagements__base = [
   {
     client: "Maharashtra State Power Generation Co. Ltd (MSPGCL / MAHAGENCO)",
     project: "Centralized Monitoring Solution (CMS) — supply, installation and commissioning",
@@ -305,3 +305,4 @@ export const powerEngagements = [
     ],
   },
 ];
+export const powerEngagements = defineContent("credentials.powerEngagements", powerEngagements__base);

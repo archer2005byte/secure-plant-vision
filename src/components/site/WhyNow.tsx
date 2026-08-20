@@ -24,7 +24,7 @@ const drivers = [
   { icon: Cpu, image: platform },
 ] as const;
 
-const shifts = [
+const shifts__base = [
   {
     heading: "Threats are becoming operational",
     icon: ShieldCheck,
@@ -95,6 +95,8 @@ const shifts = [
     implication: "Connect detection, decision and response.",
   },
 ] as const;
+const shifts = defineContent("whyNow.shifts", shifts__base);
+
 
 type Shift = (typeof shifts)[number];
 

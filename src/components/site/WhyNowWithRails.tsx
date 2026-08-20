@@ -4,7 +4,7 @@ import { ChevronRight, Newspaper, ShieldCheck, X } from "lucide-react";
 import { WhyNow } from "./WhyNow";
 import "./WhyNowWithRails.css";
 
-const incidents = [
+const incidents__base = [
   {
     tag: "INTRUSION / THEFT",
     place: "Ranchi · Mar 2026",
@@ -38,8 +38,10 @@ const incidents = [
     source: "Reuters / AP",
   },
 ];
+const incidents = defineContent("whyNow.incidents", incidents__base);
 
-const standards = [
+
+const standards__base = [
   {
     code: "ASIS PAP-2021",
     label: "Physical Asset Protection",
@@ -71,8 +73,10 @@ const standards = [
       "North American electric-sector standard requiring identification and protection of critical transmission facilities against physical attack. Relevant as a sector-specific benchmark for consequence-based physical-security planning.",
   },
 ] as const;
+const standards = defineContent("whyNow.standards", standards__base);
 
-const indiaContext = [
+
+const indiaContext__base = [
   {
     code: "CEA Technical Standards 2022",
     label: "Plant & electrical infrastructure",
@@ -98,6 +102,8 @@ const indiaContext = [
       "Power-sector cybersecurity guidance covering governance, monitoring, incident management and protection of critical systems. Included here only where physical-security systems connect with digital and OT environments.",
   },
 ] as const;
+const indiaContext = defineContent("whyNow.indiaContext", indiaContext__base);
+
 
 type DetailCard = { title: string; subtitle?: string; body: string; source?: string; side: "left" | "right" };
 

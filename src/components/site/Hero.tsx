@@ -2,12 +2,14 @@ import { defineContent } from "@/content/contentStore";
 import { ArrowRight, BarChart3, ShieldCheck, Siren, Users } from "lucide-react";
 import heroImage from "@/assets/hero-power-plant.jpg";
 
-const markers = [
+const markers__base = [
   { label: "Perimeter & Asset Protection", icon: ShieldCheck },
   { label: "Workforce & Access", icon: Users },
   { label: "Operational Intelligence", icon: BarChart3 },
   { label: "Command & Response", icon: Siren },
 ];
+const markers = defineContent("hero.markers", markers__base);
+
 
 export function Hero() {
   return (

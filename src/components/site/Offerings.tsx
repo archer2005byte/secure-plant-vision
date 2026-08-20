@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import "./Offerings.css";
 
-const phases = [
+const phases__base = [
   {
     icon: ClipboardCheck,
     name: "Diagnose",
@@ -77,8 +77,10 @@ const phases = [
     output: "Operational Assurance",
   },
 ] as const;
+const phases = defineContent("offerings.phases", phases__base);
 
-const principles = [
+
+const principles__base = [
   {
     heading: "Vendor-neutral",
     detail: "Requirements and evaluation without OEM bias",
@@ -92,6 +94,8 @@ const principles = [
     detail: "Go-live followed by measurable SLA and O&M performance",
   },
 ] as const;
+const principles = defineContent("offerings.principles", principles__base);
+
 
 export function Offerings() {
   const [stickyHeaderHeight, setStickyHeaderHeight] = useState(98);

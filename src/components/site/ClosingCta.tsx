@@ -3,7 +3,7 @@ import { ArrowRight, ClipboardCheck, DraftingCompass, Rocket, Target } from "luc
 
 import "./ClosingCta.css";
 
-const propositions = [
+const propositions__base = [
   {
     number: "01",
     title: "Assess",
@@ -29,6 +29,8 @@ const propositions = [
     icon: Rocket,
   },
 ] as const;
+const propositions = defineContent("closing.propositions", propositions__base);
+
 
 export function ClosingCta() {
   return (

@@ -218,10 +218,12 @@ const integrationRail__base: RailGroup[] = [
 export const integrationRail = defineContent("toBe.integrationRail", integrationRail__base);
 
 
-export const principles = [
+const principles__base = [
   "Secure by design",
   "Resilient by default",
   "Open & interoperable",
   "Human in the loop",
   "Auditable operations",
 ];
+export const principles = defineContent("toBe.principles", principles__base);
+

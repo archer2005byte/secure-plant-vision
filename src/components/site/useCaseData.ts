@@ -11,13 +11,15 @@ export type UseCase = {
   response: string[];
 };
 
-export const groupOrder = [
+const groupOrder__base = [
   "Generation and electrical assets",
   "Material and movement integrity",
   "Safety and process events",
   "Remote and distributed assets",
   "System integrity and investigation",
 ];
+export const groupOrder = defineContent("useCases.groupOrder", groupOrder__base);
+
 
 const useCases__base: UseCase[] = [
   {
