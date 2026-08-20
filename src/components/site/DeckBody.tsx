@@ -35,7 +35,17 @@ export function DeckBody({ chrome = true }: { chrome?: boolean }) {
       <footer className="border-t border-hairline bg-navy py-8 text-navy-foreground">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-5 text-xs text-navy-muted md:flex-row md:items-center md:justify-between md:px-8">
           <p>{copy.footer.left}</p>
-          <p>{copy.footer.right}</p>
+          <div className="flex items-center gap-4">
+            <p>{copy.footer.right}</p>
+            {chrome && (
+              <a
+                href={`${import.meta.env.BASE_URL}edit`}
+                className="rounded border border-navy-muted/40 px-2 py-1 text-navy-muted transition-colors hover:border-navy-muted hover:text-navy-foreground"
+              >
+                Edit this deck
+              </a>
+            )}
+          </div>
         </div>
       </footer>
     </div>
