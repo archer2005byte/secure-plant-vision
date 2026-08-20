@@ -1,10 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
-import { Download, RotateCcw, Save, Search, ClipboardCopy, Check, Github } from "lucide-react";
+import {
+  Download,
+  RotateCcw,
+  Save,
+  Search,
+  ClipboardCopy,
+  Check,
+  Github,
+  Loader2,
+  UploadCloud,
+} from "lucide-react";
 
 import { DeckBody } from "@/components/site/DeckBody";
 import { contentStore } from "@/content/contentStore";
-import { deckConfig, overridesEditUrl } from "@/content/deck.config";
+import { deckConfig, basePath, overridesEditUrl } from "@/content/deck.config";
+import { publishDeck } from "@/lib/publishDeck.functions";
+
 
 export const Route = createFileRoute("/edit")({
   ssr: false,
@@ -43,18 +56,33 @@ function groupLabel(path: string) {
   return `${humanisePath(namespace ?? "")}${second && !/^\d+$/.test(second) ? ` / ${humanisePath(second)}` : ""}`;
 }
 
+type PublishState = "idle" | "publishing" | "done";
+type PublishResult = { commitUrl: string; actionsUrl: string; commitSha: string };
+
 function EditorPage() {
   const version = useContentVersion();
   const [query, setQuery] = useState("");
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [canPublish, setCanPublish] = useState(false);
+  const [publishState, setPublishState] = useState<PublishState>("idle");
+  const [publishResult, setPublishResult] = useState<PublishResult | null>(null);
+  const [publishError, setPublishError] = useState<string | null>(null);
+
+  const runPublish = useServerFn(publishDeck);
 
   const fields = useMemo(() => contentStore.fields(), [version]);
 
   useEffect(() => {
     contentStore.loadDraft();
+    // The GitHub Pages copy is served from /<repo>/ and has no server behind it,
+    // so one-click publishing is only offered where a server function can run.
+    const onPages =
+      basePath !== "/" && window.location.pathname.startsWith(basePath);
+    setCanPublish(!onPages);
   }, []);
+
 
   const groups = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -79,6 +107,29 @@ function EditorPage() {
   ).length;
 
   const overridesJson = JSON.stringify(contentStore.getOverrides(), null, 2);
+
+  const publish = async () => {
+    setPublishState("publishing");
+    setPublishError(null);
+    setPublishResult(null);
+    try {
+      const result = await runPublish({
+        data: {
+          overrides: contentStore.getOverrides(),
+          message: `Update deck content (${changedCount} text change${changedCount === 1 ? "" : "s"})`,
+        },
+      });
+      contentStore.saveDraft();
+      setPublishResult(result);
+      setPublishState("done");
+      window.setTimeout(() => setPublishState("idle"), 6000);
+    } catch (error) {
+      setPublishError(error instanceof Error ? error.message : "Publishing failed.");
+      setPublishState("idle");
+    }
+  };
+
+
 
   const download = () => {
     const blob = new Blob([`${overridesJson}\n`], { type: "application/json" });
@@ -111,17 +162,38 @@ function EditorPage() {
           </p>
           <h1 className="mt-1 text-lg font-semibold">{deckConfig.repoName}</h1>
           <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-            Edit any text below. The deck on the right updates as you type. Nothing is published
-            until you paste the JSON into <code>deck.overrides.json</code> on GitHub and commit
-            it — the site rebuilds itself from there.
+            {canPublish
+              ? "Edit any text below — the deck on the right updates as you type. Press Save & publish and the change is committed to GitHub and the live site rebuilds itself."
+              : "Edit any text below — the deck on the right updates as you type. This copy of the editor can't publish; open the deck in Lovable to save, or copy the JSON into deck.overrides.json on GitHub."}
           </p>
         </header>
 
         <div className="flex flex-wrap gap-2 border-b border-hairline px-4 py-3">
+          {canPublish ? (
+            <button
+              type="button"
+              onClick={publish}
+              disabled={publishState === "publishing" || changedCount === 0}
+              className="inline-flex items-center gap-1.5 rounded-md bg-brand px-3 py-2 text-xs font-semibold text-background disabled:opacity-50"
+            >
+              {publishState === "publishing" ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : publishState === "done" ? (
+                <Check className="h-3.5 w-3.5" />
+              ) : (
+                <UploadCloud className="h-3.5 w-3.5" />
+              )}
+              {publishState === "publishing"
+                ? "Publishing…"
+                : publishState === "done"
+                  ? "Published"
+                  : "Save & publish"}
+            </button>
+          ) : null}
           <button
             type="button"
             onClick={save}
-            className="inline-flex items-center gap-1.5 rounded-md bg-foreground px-3 py-2 text-xs font-semibold text-background"
+            className="inline-flex items-center gap-1.5 rounded-md border border-hairline px-3 py-2 text-xs font-semibold"
           >
             {saved ? <Check className="h-3.5 w-3.5" /> : <Save className="h-3.5 w-3.5" />}
             {saved ? "Saved" : "Save draft"}
@@ -142,15 +214,17 @@ function EditorPage() {
             {copied ? <Check className="h-3.5 w-3.5" /> : <ClipboardCopy className="h-3.5 w-3.5" />}
             {copied ? "Copied" : "Copy JSON"}
           </button>
-          <a
-            href={overridesEditUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-md border border-hairline px-3 py-2 text-xs font-semibold"
-          >
-            <Github className="h-3.5 w-3.5" />
-            Commit on GitHub
-          </a>
+          {!canPublish ? (
+            <a
+              href={overridesEditUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-md border border-hairline px-3 py-2 text-xs font-semibold"
+            >
+              <Github className="h-3.5 w-3.5" />
+              Commit on GitHub
+            </a>
+          ) : null}
           <button
             type="button"
             onClick={() => contentStore.clearDraft()}
@@ -163,7 +237,27 @@ function EditorPage() {
             {changedCount === 0 ? "No changes yet" : `${changedCount} text change(s)`} ·{" "}
             {fields.length} editable fields
           </p>
+          {publishState === "done" && publishResult ? (
+            <p className="w-full rounded-md bg-surface-2 px-2 py-1.5 text-xs text-muted-foreground">
+              Committed. The site rebuilds in about a minute —{" "}
+              <a
+                href={publishResult.actionsUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="font-semibold text-brand underline"
+              >
+                view the build
+              </a>
+              .
+            </p>
+          ) : null}
+          {publishError ? (
+            <p className="w-full rounded-md border border-destructive/40 px-2 py-1.5 text-xs text-destructive">
+              {publishError}
+            </p>
+          ) : null}
         </div>
+
 
         <div className="border-b border-hairline px-4 py-2">
           <label className="flex items-center gap-2 rounded-md border border-hairline px-2 py-1.5">
