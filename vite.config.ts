@@ -34,6 +34,10 @@ export default defineConfig({
         path: "/",
         prerender: { enabled: true, outputPath: "/" },
       },
+      {
+        path: "/edit",
+        prerender: { enabled: true, outputPath: "/edit/" },
+      },
     ],
   },
 });

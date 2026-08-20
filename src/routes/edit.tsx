@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { Download, RotateCcw, Save, Search, ClipboardCopy, Check } from "lucide-react";
 
 import { DeckBody } from "@/components/site/DeckBody";
@@ -49,14 +49,12 @@ function EditorPage() {
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [draftLoaded, setDraftLoaded] = useState(false);
 
   const fields = useMemo(() => contentStore.fields(), [version]);
 
-  if (!draftLoaded) {
+  useEffect(() => {
     contentStore.loadDraft();
-    setDraftLoaded(true);
-  }
+  }, []);
 
   const groups = useMemo(() => {
     const needle = query.trim().toLowerCase();
