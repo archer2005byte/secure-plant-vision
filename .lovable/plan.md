@@ -39,7 +39,7 @@ This makes your recurring "edit wording and republish" workflow safe and repeata
 
 ## Decisions I need from you
 
-1. **Canonical URL**: repoint the `<link rel="canonical">` and `og:url` in `index.tsx` from the old github.io address to this project's Lovable URL, so SEO and social previews resolve to the new home (no split ranking).
+1. **Canonical URL**: leave it as-is. The `<link rel="canonical">` and `og:url` in `index.tsx` keep pointing at `https://archer2005byte.github.io/secure-plant-vision-2/` so the existing GitHub Pages site remains the authoritative home. The Lovable copy coexists without competing for SEO ranking; the GitHub site stays unchanged.
 2. **Skill too?** Build the `presentation-content` skill as part of this, or just do the migration first and revisit the skill later?
 
 ## Out of scope
