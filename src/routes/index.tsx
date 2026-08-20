@@ -18,7 +18,7 @@ import "@/components/site/PresentationViewport.css";
 const title = "Integrated Surveillance & Security Modernization | EY";
 const description =
   "EY advisory for power generation companies: perimeter security, plant surveillance, command-centre design, DPR/RFP support and implementation governance.";
-const publishedUrl = "https://archer2005byte.github.io/secure-plant-vision-2/";
+const publishedUrl = "https://archer2005byte.github.io/secure-plant-vision/";
 
 export const Route = createFileRoute("/")({
   head: () => ({
