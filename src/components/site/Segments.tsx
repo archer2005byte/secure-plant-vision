@@ -1,3 +1,4 @@
+import { copy } from "@/content/sectionCopy";
 import { defineContent } from "@/content/contentStore";
 import {
   BarChart3,
@@ -220,13 +221,13 @@ export function Segments() {
         <header>
           <p className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.22em] text-ey-green-deep">
             <span aria-hidden className="h-3 w-6 shrink-0 rounded-full bg-ey-yellow" />
-            Section 03 — Starting position
+            {copy.segments.eyebrow}
           </p>
           <h2 className="mt-1 font-semibold leading-[1.02] text-ey-green-deep" style={{ fontSize: "2.75rem" }}>
-            One sector. Two modernisation starting points.
+            {copy.segments.heading}
           </h2>
           <p className="mt-1 text-lg leading-[1.25] text-muted-foreground">
-            The modernisation pathway is determined by the maturity, scale and integration of the existing security estate.
+            {copy.segments.lead}
           </p>
         </header>
 

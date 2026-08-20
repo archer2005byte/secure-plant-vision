@@ -1,3 +1,4 @@
+import { copy } from "@/content/sectionCopy";
 import { defineContent } from "@/content/contentStore";
 import { FileCheck2, GitBranch, ShieldCheck, Target, Zap } from "lucide-react";
 
@@ -88,17 +89,16 @@ export function WhyEy() {
           <div className="min-w-0">
             <p className="why-ey-eyebrow">
               <span aria-hidden="true" />
-              SECTION 09
+              {copy.whyEy.eyebrow}
             </p>
-            <h2>EY brings the four capabilities that turn architecture into delivery</h2>
+            <h2>{copy.whyEy.heading}</h2>
             <p className="why-ey-subtitle">
-              Domain context, converged security design, procurement engineering and programme
-              governance operate as one delivery system—not four disconnected workstreams.
+              {copy.whyEy.lead}
             </p>
           </div>
 
           <a href="#credentials" onClick={handleCredentialsClick} className="why-ey-cta">
-            View evidence base
+            {copy.whyEy.cta}
           </a>
         </header>
 

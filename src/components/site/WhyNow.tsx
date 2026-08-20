@@ -1,3 +1,4 @@
+import { copy } from "@/content/sectionCopy";
 import { defineContent } from "@/content/contentStore";
 import {
   AlertTriangle,
@@ -190,13 +191,13 @@ export function WhyNow({ embedded = false }: { embedded?: boolean }) {
           <div>
             <p className="flex items-center gap-3 text-base font-semibold uppercase tracking-[0.22em] text-ey-green-deep">
               <span aria-hidden className="h-3 w-1.5 shrink-0 rounded-sm bg-ey-yellow" />
-              Section 02
+              {copy.whyNow.eyebrow}
             </p>
             <h2 style={{ fontSize: "2.5rem" }} className="font-semibold leading-tight text-ey-green-deep">
-              Why plant security architecture must change now
+              {copy.whyNow.heading}
             </h2>
             <p className="mt-1 text-lg leading-[1.3] text-muted-foreground">
-              Exposure is widening, plant risk remains uneven, and security performance is becoming measurable.
+              {copy.whyNow.lead}
             </p>
           </div>
         )}

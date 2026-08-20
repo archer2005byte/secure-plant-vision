@@ -1,3 +1,4 @@
+import { copy } from "@/content/sectionCopy";
 import { defineContent } from "@/content/contentStore";
 import { ArrowRight, BarChart3, ShieldCheck, Siren, Users } from "lucide-react";
 import heroImage from "@/assets/hero-power-plant.jpg";
@@ -38,22 +39,20 @@ export function Hero() {
         <div className="max-w-3xl">
           <span className="inline-flex items-center gap-2 rounded-full border border-navy-foreground/20 bg-navy-foreground/5 px-3 py-1.5 text-base font-semibold uppercase tracking-[0.18em] text-brand">
             <ShieldCheck className="h-3.5 w-3.5" />
-            ADVISORY PERSPECTIVE FOR POWER GENERATION COMPANIES
+            {copy.hero.badge}
           </span>
           <h1 className="mt-7 text-balance text-3xl font-semibold leading-[1.1] md:text-6xl">
-            Integrated Security Architecture for Power Generation Assets
+            {copy.hero.headline}
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-relaxed text-navy-muted md:text-lg">
-            Helping power generation companies strengthen perimeter security, plant surveillance,
-            operational visibility, and incident response through a structured advisory-led
-            approach.
+            {copy.hero.strapline}
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
             <a
               href="#to-be"
               className="inline-flex items-center gap-2 rounded-md bg-brand px-5 py-3 text-base font-semibold text-brand-foreground transition-opacity hover:opacity-90"
             >
-              Explore the framework
+              {copy.hero.cta}
               <ArrowRight className="h-4 w-4" />
             </a>
           </div>
@@ -61,7 +60,7 @@ export function Hero() {
           <div className="mt-6 max-w-2xl overflow-hidden rounded-lg border border-navy-foreground/15 bg-navy/70">
             <div className="flex items-center gap-4 px-5 py-2.5">
               <span className="h-px flex-1 bg-brand/45" aria-hidden="true" />
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-brand">Focus</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-brand">{copy.hero.focusLabel}</p>
               <span className="h-px flex-1 bg-brand/45" aria-hidden="true" />
             </div>
             <dl className="grid grid-cols-2 border-t border-navy-foreground/10 sm:grid-cols-4">

@@ -1,3 +1,4 @@
+import { copy } from "@/content/sectionCopy";
 import { defineContent } from "@/content/contentStore";
 import { ArrowRight, ClipboardCheck, DraftingCompass, Rocket, Target } from "lucide-react";
 
@@ -38,24 +39,23 @@ export function ClosingCta() {
       <div className="closing-layout mx-auto grid w-full max-w-6xl items-center px-5 md:px-8">
         <div className="closing-narrative flex min-w-0 flex-col">
           <p className="closing-eyebrow font-semibold uppercase tracking-[0.22em] text-ey-yellow">
-            Section 11
+            {copy.closing.eyebrow}
           </p>
           <h2 className="closing-title mt-4 font-semibold leading-[1.02] text-white">
-            Start with one pilot plant - or one operating cluster.
+            {copy.closing.heading}
           </h2>
           <p className="closing-support mt-5 max-w-2xl leading-[1.45] text-white/68">
-            A structured assessment will establish the current state, define the target
-            architecture, prioritise investment and produce an executable modernisation roadmap.
+            {copy.closing.lead}
           </p>
           <a
-            href="mailto:akshya.singhal@in.ey.com"
+            href={copy.closing.ctaHref}
             className="closing-cta mt-7 inline-flex w-fit items-center gap-2 rounded-md bg-ey-yellow px-5 py-3 font-semibold text-[#1A1A24] outline-none transition-colors hover:bg-[#F3DB00] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1A1A24]"
           >
-            Book an assessment discussion
+            {copy.closing.cta}
             <ArrowRight aria-hidden className="h-5 w-5" />
           </a>
           <p className="closing-line mt-auto font-semibold text-white/68">
-            Start focused. Scale on evidence.
+            {copy.closing.signoff}
           </p>
         </div>
 

@@ -1,3 +1,4 @@
+import { copy } from "@/content/sectionCopy";
 import {
   useEffect,
   useMemo,
@@ -597,16 +598,13 @@ export function ToBeArchitecture() {
         <header>
           <p className="flex items-center gap-3 text-base font-semibold uppercase tracking-[0.22em] text-[#1A1A24]">
             <span aria-hidden="true" className="h-3 w-1.5 rounded-sm bg-[#FFE600]" />
-            Section 06
+            {copy.toBe.eyebrow}
           </p>
           <h2 className="s06-title mt-2 font-semibold text-[#1A1A24]">
-            To-Be Integrated Security Architecture
+            {copy.toBe.heading}
           </h2>
           <p className="s06-intro mt-1.5 text-[#494965]">
-            Read bottom-up: distributed sensing becomes transported data, then correlated
-            intelligence, then coordinated human decision, then governed operational resilience —
-            with cyber security and enterprise integration spanning every layer. Select any layer
-            for the technical detail.
+            {copy.toBe.lead}
           </p>
         </header>
 

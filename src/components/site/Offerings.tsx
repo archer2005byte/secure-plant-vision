@@ -1,3 +1,4 @@
+import { copy } from "@/content/sectionCopy";
 import { defineContent } from "@/content/contentStore";
 import { useEffect, useState } from "react";
 import {
@@ -150,14 +151,13 @@ export function Offerings() {
         <header>
           <p className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.22em] text-ey-green-deep">
             <span aria-hidden="true" className="h-3 w-1.5 rounded-sm bg-ey-yellow" />
-            SECTION 08
+            {copy.offerings.eyebrow}
           </p>
           <h2 className="offerings-title mt-1 text-balance font-semibold tracking-[-0.035em] text-foreground">
-            One advisory lifecycle—from diagnosis to sustained operations
+            {copy.offerings.heading}
           </h2>
           <p className="offerings-subtitle text-[18px] leading-[1.3] text-muted-foreground">
-            Each phase ends with a defined programme output, with vendor neutrality and governance
-            running through the full lifecycle.
+            {copy.offerings.lead}
           </p>
         </header>
 

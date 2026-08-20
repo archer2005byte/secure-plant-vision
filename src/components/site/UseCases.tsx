@@ -1,3 +1,4 @@
+import { copy } from "@/content/sectionCopy";
 import {
   ArrowRight,
   BatteryWarning,
@@ -432,16 +433,16 @@ export function UseCases() {
         <header ref={sectionHeaderRef} className="min-w-0">
           <p className="flex items-center gap-3 text-base font-semibold uppercase tracking-[0.22em] text-ey-green-deep">
             <span aria-hidden className="h-3 w-1.5 shrink-0 rounded-sm bg-ey-yellow" />
-            Section 07
+            {copy.useCases.eyebrow}
           </p>
           <h2
             className="mt-1 whitespace-normal font-semibold leading-[1.02] text-ey-green-deep lg:whitespace-nowrap"
             style={{ fontSize: "clamp(42px, 3.25vw, 54px)" }}
           >
-            Power-plant security scenarios
+            {copy.useCases.heading}
           </h2>
           <p className="mt-1 text-[18px] leading-[1.3] text-muted-foreground lg:whitespace-nowrap">
-            See how detection, correlation and control-room response work as one operational chain.
+            {copy.useCases.lead}
           </p>
         </header>
 

@@ -1,3 +1,4 @@
+import { copy } from "@/content/sectionCopy";
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { ArrowRight, Check, MousePointerClick, ShieldAlert, ShieldCheck } from "lucide-react";
 
@@ -139,17 +140,16 @@ export function PlantBlocks() {
                 className="h-3 w-1.5 shrink-0 rounded-sm"
                 style={{ backgroundColor: "#FFE600" }}
               />
-              Section 04
+              {copy.plantBlocks.eyebrow}
             </p>
             <h2
               style={{ fontSize: "2.75rem", lineHeight: 1.02 }}
               className="mt-1 font-semibold text-ey-green-deep"
             >
-              Security Zones &amp; Critical Plant Assets
+              {copy.plantBlocks.heading}
             </h2>
             <p className="mt-1 text-lg leading-[1.3] text-muted-foreground">
-              Select a plant type and asset to examine its risk exposure and mapped security
-              controls.
+              {copy.plantBlocks.lead}
             </p>
           </div>
 
