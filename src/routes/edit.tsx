@@ -1,10 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
-import { Download, RotateCcw, Save, Search, ClipboardCopy, Check, Github } from "lucide-react";
+import {
+  Download,
+  RotateCcw,
+  Save,
+  Search,
+  ClipboardCopy,
+  Check,
+  Github,
+  Loader2,
+  UploadCloud,
+} from "lucide-react";
 
 import { DeckBody } from "@/components/site/DeckBody";
 import { contentStore } from "@/content/contentStore";
-import { deckConfig, overridesEditUrl } from "@/content/deck.config";
+import { deckConfig, basePath, overridesEditUrl } from "@/content/deck.config";
+import { publishDeck } from "@/lib/publishDeck.functions";
+
 
 export const Route = createFileRoute("/edit")({
   ssr: false,
