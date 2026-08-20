@@ -34,10 +34,13 @@ published: `https://<owner>.github.io/<repo>/edit/`).
 
 ## 4. Publish
 
-Replace `src/content/deck.overrides.json` with the downloaded file and commit to
-`main` — on GitHub you can drag the file into the repo, or paste the copied JSON
-into the file editor. The Actions workflow rebuilds and republishes automatically.
-Green check in the **Actions** tab = live.
+Click **Copy JSON**, then **Commit on GitHub** in the editor — it opens
+`src/content/deck.overrides.json` in GitHub's file editor. Select all, paste, and
+**Commit changes**. (You can also drag the downloaded file into the repo instead.)
+
+The Actions workflow rebuilds and republishes automatically. Green check in the
+**Actions** tab = live. The workflow derives the Pages sub-path from the repo
+name, so a copied repo needs no workflow edits.
 
 ## What lives where
 

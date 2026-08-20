@@ -11,3 +11,6 @@ export const deckConfig = {
 
 export const publishedUrl = `https://${deckConfig.owner}.github.io/${deckConfig.repoName}/`;
 export const basePath = `/${deckConfig.repoName}/`;
+
+/** Direct link to edit the deck's text overrides on GitHub. */
+export const overridesEditUrl = `https://github.com/${deckConfig.owner}/${deckConfig.repoName}/edit/main/src/content/deck.overrides.json`;

@@ -38,13 +38,16 @@ jobs:
         id: pages
         uses: actions/configure-pages@v6
 
+      # The Pages sub-path is derived from the repository name, so a copy of this
+      # repo publishes correctly without editing the workflow.
       - name: Build current site
         env:
-          VITE_PUBLIC_BASE: /secure-plant-vision/
+          VITE_PUBLIC_BASE: /${{ github.event.repository.name }}/
         run: |
           bun install --frozen-lockfile
           bun run build
           test -f dist/client/index.html
+          test -f dist/client/edit/index.html
 
       # Frozen versions to build into /versions/<name>/.
       # To freeze a version: create a branch/tag in the repo at the desired state,
@@ -74,7 +77,7 @@ jobs:
               (
                 cd ver-src
                 bun install --frozen-lockfile
-                VITE_PUBLIC_BASE="/secure-plant-vision/versions/$name/" bun run build
+                VITE_PUBLIC_BASE="/${{ github.event.repository.name }}/versions/$name/" bun run build
                 test -f dist/client/index.html
               )
               mkdir -p "archive-out/$name"
