@@ -39,7 +39,7 @@ This makes your recurring "edit wording and republish" workflow safe and repeata
 
 ## Decisions I need from you
 
-1. **Canonical URL**: switch to the Lovable URL now, or leave the github.io URL? (I'll default to the Lovable URL.)
+1. **Canonical URL**: repoint the `<link rel="canonical">` and `og:url` in `index.tsx` from the old github.io address to this project's Lovable URL, so SEO and social previews resolve to the new home (no split ranking).
 2. **Skill too?** Build the `presentation-content` skill as part of this, or just do the migration first and revisit the skill later?
 
 ## Out of scope
