@@ -1,29 +1,25 @@
-# Welcome to your Lovable project
+# Secure Plant Vision
 
-This project was built with [Lovable](https://lovable.dev).
+Integrated surveillance and physical-security modernisation presentation for power generation assets.
 
-## Build with Lovable
+## Live presentation
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+- [Open current version](https://archer2005byte.github.io/secure-plant-vision-2/)
+- **[Open Version Archive](https://archer2005byte.github.io/secure-plant-vision-2/versions/)**
+  - [Version 1 — 17 Aug 2026](https://archer2005byte.github.io/secure-plant-vision-2/versions/v1/)
+  - [Version 2 — 18 Aug 2026](https://archer2005byte.github.io/secure-plant-vision-2/versions/v2/)
+  - [Version 2.1 — 19 Aug 2026](https://archer2005byte.github.io/secure-plant-vision-2/versions/v2.1/)
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+The current approved presentation is published from `main`. Approved historical versions are preserved as frozen Git refs and rebuilt into the browser-visible archive above.
 
-## Development
+## Versioning model
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+- `main` — current approved presentation
+- `v1.0.0_17082026` — frozen Version 1 tag
+- `v2.0.0_18082026` — frozen Version 2 tag
+- `archive/v2.1.0_19082026` — frozen Version 2.1 ref, capturing the EY laptop fit and Section 02 refinement after PR #8
+- New presentation changes should be developed on a branch, reviewed, and merged into `main` only when approved.
 
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
-```
+## Project brief
 
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
+The original design and content brief has been retained at [`docs/PROJECT_BRIEF.md`](docs/PROJECT_BRIEF.md).

@@ -1,0 +1,151 @@
+name: Deploy site and version archive
+
+# Builds the static site (TanStack Start prerender -> dist/client) and deploys it
+# to GitHub Pages at https://archer2005byte.github.io/secure-plant-vision/.
+# Also builds any frozen version refs listed in VERSIONS_JSON into /versions/<name>/.
+# Missing version refs are skipped with a warning instead of failing the build,
+# so the workflow is green on day one (current site only) and grows as you freeze versions.
+#
+# One-time setup in the repo: Settings -> Pages -> Source = "GitHub Actions".
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v6
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Configure GitHub Pages
+        id: pages
+        uses: actions/configure-pages@v6
+
+      - name: Build current site
+        run: |
+          bun install --frozen-lockfile
+          bun run build
+          test -f dist/client/index.html
+
+      # Frozen versions to build into /versions/<name>/.
+      # To freeze a version: create a branch/tag in the repo at the desired state,
+        # then add an entry here { ref, name, date, desc } and push to main.
+      # On day one this is empty — only the current site deploys.
+      - name: Build version archive
+        env:
+          # Example entry (uncomment and create the ref to enable):
+          # {"ref":"v1.0.0_17082026","name":"v1","date":"17 Aug 2026","desc":"Initial version"},
+          VERSIONS_JSON: |
+            []
+        run: |
+          set -e
+          mkdir -p archive-out
+          echo "$VERSIONS_JSON" > versions.json
+          : > versions-built.txt
+          for row in $(jq -c '.[]' versions.json); do
+            ref=$(jq -r '.ref' <<<"$row")
+            name=$(jq -r '.name' <<<"$row")
+            date=$(jq -r '.date' <<<"$row")
+            desc=$(jq -r '.desc' <<<"$row")
+            if git ls-remote --exit-code origin "$ref" >/dev/null 2>&1; then
+              echo "::notice::Building version $name from ref $ref"
+              rm -rf ver-src
+              git fetch --depth 1 origin "$ref"
+              git worktree add --detach ver-src FETCH_HEAD
+              (
+                cd ver-src
+                bun install --frozen-lockfile
+                VITE_PUBLIC_BASE="/secure-plant-vision/versions/$name/" bun run build
+                test -f dist/client/index.html
+              )
+              mkdir -p "archive-out/$name"
+              cp -a ver-src/dist/client/. "archive-out/$name/"
+              git worktree remove ver-src --force
+              printf '%s\t%s\t%s\n' "$name" "$date" "$desc" >> versions-built.txt
+            else
+              echo "::warning::Version $name skipped — ref $ref not found. Create the branch/tag in the repo to include it."
+            fi
+          done
+
+      - name: Assemble site
+        run: |
+          set -e
+          mkdir -p site/versions
+          cp -a dist/client/. site/
+          if [ -n "$(ls -A archive-out 2>/dev/null)" ]; then
+            cp -a archive-out/. site/versions/
+          fi
+          {
+            cat <<'HTML'
+          <!doctype html>
+          <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>Secure Plant Vision — Version Archive</title>
+            <style>
+              body { margin:0; padding:48px; font-family:Arial,sans-serif; background:#f5f3e9; color:#1a1a24; }
+              main { max-width:760px; margin:0 auto; }
+              h1 { font-size:36px; margin-bottom:8px; }
+              p { color:#555568; }
+              .version { margin-top:24px; padding:24px; background:white; border:1px solid #d6d6dc; border-left:6px solid #ffe600; }
+              .version h2 { margin:0 0 6px; }
+              a { display:inline-block; margin-top:12px; font-weight:700; color:#1a1a24; }
+            </style>
+          </head>
+          <body>
+            <main>
+              <h1>Secure Plant Vision — Version Archive</h1>
+              <p>Frozen approved presentation versions.</p>
+          HTML
+            if [ -s versions-built.txt ]; then
+              while IFS=$'\t' read -r vname vdate vdesc; do
+                echo "<div class=\"version\"><h2>Version $vname</h2><p>$vdate</p><p>$vdesc</p><a href=\"./$vname/\">Open Version $vname</a></div>"
+              done < versions-built.txt
+            else
+              echo "<div class=\"version\"><h2>No archived versions yet</h2><p>Only the current version is published. Freeze a version to add it here.</p></div>"
+            fi
+            cat <<'HTML'
+              <p><a href="../">Return to current version</a></p>
+            </main>
+          </body>
+          </html>
+          HTML
+          } > site/versions/index.html
+          touch site/.nojekyll
+          test -f site/index.html
+          test -f site/versions/index.html
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: site
+          include-hidden-files: true
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
