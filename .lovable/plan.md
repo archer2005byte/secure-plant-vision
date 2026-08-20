@@ -37,6 +37,16 @@ Your stated goal was a microsite with **stable structure but editable text**. Th
 
 This makes your recurring "edit wording and republish" workflow safe and repeatable.
 
+## After migration: connect to a new GitHub repo
+
+Once the site is in Lovable and the text is editable, point this Lovable project at a **new** GitHub repo `archer2005byte/secure-plant-vision` (no `-2`):
+
+1. Rename the Lovable project to "secure-plant-vision" (so the created repo gets that name), or rename the repo on GitHub afterward.
+2. Connect via the `+` menu → GitHub → Connect project → authorize the Lovable GitHub app → select the `archer2005byte` account → Create Repository.
+3. Two-way sync then keeps the new `secure-plant-vision` repo in step with Lovable: Lovable edits push to it, and commits to it sync back.
+
+The **old** `secure-plant-vision-2` repo and its github.io site are a separate repo and stay completely untouched — honoring "no change to GitHub." The Lovable copy's canonical/og:url keep pointing at the old github.io URL, so that site remains the SEO authority while the new repo holds the editable source.
+
 ## Decisions I need from you
 
 1. **Canonical URL**: leave it as-is. The `<link rel="canonical">` and `og:url` in `index.tsx` keep pointing at `https://archer2005byte.github.io/secure-plant-vision-2/` so the existing GitHub Pages site remains the authoritative home. The Lovable copy coexists without competing for SEO ranking; the GitHub site stays unchanged.
