@@ -102,7 +102,7 @@ function wrap<T>(path: string, value: T): T {
     get(target, prop, receiver) {
       const raw = Reflect.get(target, prop, receiver);
       if (typeof prop === "symbol") return raw;
-      if (typeof raw === "function") return raw.bind(target);
+      if (typeof raw === "function") return raw;
       return wrap(`${path}.${prop}`, raw);
     },
   }) as T;
