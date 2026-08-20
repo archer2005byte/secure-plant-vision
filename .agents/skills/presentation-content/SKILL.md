@@ -10,6 +10,18 @@ The Secure Plant Vision microsite is a static TanStack Start site. Its **text is
 
 The site publishes to GitHub Pages at `https://archer2005byte.github.io/secure-plant-vision/`. Every commit to `main` (made here in Lovable, or directly on GitHub) triggers `.github/workflows/deploy-pages.yml`, which rebuilds and republishes automatically. There is no manual publish step.
 
+## Preferred path: the content layer
+
+Text is now overridable without touching components. Prefer this order:
+
+1. **Browser editor at `/edit`** — the user edits text visually, downloads `deck.overrides.json`, and commits it. This is the normal workflow; point them here.
+2. **`src/content/deck.overrides.json`** — a flat map of `namespace.path.to.string` -> replacement text. Overrides always win over the defaults in code. Editing this file is safe and never breaks layout.
+3. **Defaults in code** — only when the *template itself* should change: `src/content/sectionCopy.ts` (section eyebrows, headings, leads, CTAs, page meta, footer) and the data files / inline `defineContent` blocks listed below.
+
+`src/content/deck.config.ts` holds `repoName` + `owner`, which drive the Pages sub-path, canonical URL and OG URL. Changing the repo name means changing that file only. See `docs/NEW_DECK.md` for the full template-reuse flow.
+
+Every editable string is registered through `defineContent(namespace, base)` in `src/content/contentStore.ts`. Non-string values (icons, colours, coordinates, numbers) pass through untouched, so overrides can never corrupt structure.
+
 ## The one rule
 
 **Edit only the text inside string values.** Keep every surrounding token intact — quotes (`"`), brackets (`[]` `{}`), commas, trailing commas, ids, icon import names, type names, and numeric coordinates. A single missing comma or unbalanced quote fails the build and the site will not update until it is fixed.
@@ -38,7 +50,8 @@ Plus a footer (disclaimer text, inline in `index.tsx`) and `<SiteNav />` / `<Dec
 
 | Section | File | What to edit |
 |---|---|---|
-| SEO title, description, og tags, canonical URL, footer | `src/routes/index.tsx` | `title`, `description`, `publishedUrl` consts near top; footer `<p>` JSX |
+| SEO title, description, footer, all section headings/leads/CTAs | **`src/content/sectionCopy.ts`** | the `copy` object |
+| Published URL / repo name | **`src/content/deck.config.ts`** | `repoName`, `owner` |
 | Hero | `src/components/site/Hero.tsx` | `markers` array (focus labels); the `<h1>` headline and `<p>` strapline are inline JSX; the `<img alt>` text |
 | WhyNow (why-now context) | `src/components/site/WhyNow.tsx` | inline `as const` arrays at top (headings, titles, details) |
 | WhyNowWithRails (news + standards) | `src/components/site/WhyNowWithRails.tsx` | `incidents` array (tag, place, headline, detail, source); `standards` array (code, label, detail) |
