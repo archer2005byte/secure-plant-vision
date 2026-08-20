@@ -1,3 +1,5 @@
+import { copy } from "@/content/sectionCopy";
+import { defineContent } from "@/content/contentStore";
 import {
   BarChart3,
   Building2,
@@ -16,15 +18,19 @@ import establishedPhoto from "@/assets/section3-established.jpg";
 import commandCentrePhoto from "@/assets/section3-command-centre.jpg";
 import brownfieldPhoto from "@/assets/section3-brownfield.jpg";
 
-const establishedPlants = ["PLANT A", "PLANT B", "PLANT C"] as const;
-const fragmented = [
+const establishedPlants__base = ["PLANT A", "PLANT B", "PLANT C"] as const;
+const establishedPlants = defineContent("segments.establishedPlants", establishedPlants__base);
+
+const fragmented__base = [
   { icon: Camera, label: "Cameras" },
   { icon: KeyRound, label: "Access Control" },
   { icon: Server, label: "Local NVR" },
   { icon: Cpu, label: "Legacy Systems" },
   { icon: Server, label: "Local Server" },
 ] as const;
-const integrated = [
+const fragmented = defineContent("segments.fragmented", fragmented__base);
+
+const integrated__base = [
   { icon: Camera, label: "Unified Surveillance" },
   { icon: KeyRound, label: "Access Management" },
   { icon: ShieldCheck, label: "Perimeter Protection" },
@@ -32,8 +38,10 @@ const integrated = [
   { icon: RadioTower, label: "Communication Systems" },
   { icon: Server, label: "Centralised Management" },
 ] as const;
+const integrated = defineContent("segments.integrated", integrated__base);
 
-const pathways = [
+
+const pathways__base = [
   {
     number: "01",
     title: "Established multi-site estates",
@@ -61,6 +69,8 @@ const pathways = [
     target: "Integrated security through sequenced, investment-led modernisation.",
   },
 ] as const;
+const pathways = defineContent("segments.pathways", pathways__base);
+
 
 function Pathway({ stages }: { stages: readonly string[] }) {
   return (
@@ -211,13 +221,13 @@ export function Segments() {
         <header>
           <p className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.22em] text-ey-green-deep">
             <span aria-hidden className="h-3 w-6 shrink-0 rounded-full bg-ey-yellow" />
-            Section 03 — Starting position
+            {copy.segments.eyebrow}
           </p>
           <h2 className="mt-1 font-semibold leading-[1.02] text-ey-green-deep" style={{ fontSize: "2.75rem" }}>
-            One sector. Two modernisation starting points.
+            {copy.segments.heading}
           </h2>
           <p className="mt-1 text-lg leading-[1.25] text-muted-foreground">
-            The modernisation pathway is determined by the maturity, scale and integration of the existing security estate.
+            {copy.segments.lead}
           </p>
         </header>
 

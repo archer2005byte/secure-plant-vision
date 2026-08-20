@@ -1,3 +1,4 @@
+import { defineContent } from "@/content/contentStore";
 import {
   Activity,
   AlarmClock,
@@ -61,7 +62,7 @@ export type ArchLayer = {
 };
 
 /** Ordered bottom-up; rendered top-down by reversing. */
-export const archLayers: ArchLayer[] = [
+const archLayers__base: ArchLayer[] = [
   {
     id: "field",
     number: "01",
@@ -149,18 +150,22 @@ export const archLayers: ArchLayer[] = [
     ],
   },
 ];
+export const archLayers = defineContent("toBe.archLayers", archLayers__base);
+
 
 /** Flow payloads, indexed by the layer the data is leaving. */
-export const flows: Record<string, string> = {
+const flows__base: Record<string, string> = {
   field: "Video - Telemetry - Identity - Sensor events",
   edge: "Edge Processing · Resilient Transport · Recording Continuity",
   platform: "Correlated events - Alarms - Evidence - Situational awareness",
   command: "Outcomes - Response times - Audit record",
 };
+export const flows = defineContent("toBe.flows", flows__base);
+
 
 export type RailGroup = { caption?: string; items: Component[] };
 
-export const cyberRail: RailGroup[] = [
+const cyberRail__base: RailGroup[] = [
   {
     caption: "Security-system controls",
     items: [
@@ -183,8 +188,10 @@ export const cyberRail: RailGroup[] = [
     ],
   },
 ];
+export const cyberRail = defineContent("toBe.cyberRail", cyberRail__base);
 
-export const integrationRail: RailGroup[] = [
+
+const integrationRail__base: RailGroup[] = [
   {
     caption: "Plant / enterprise",
     items: [
@@ -208,11 +215,15 @@ export const integrationRail: RailGroup[] = [
     ],
   },
 ];
+export const integrationRail = defineContent("toBe.integrationRail", integrationRail__base);
 
-export const principles = [
+
+const principles__base = [
   "Secure by design",
   "Resilient by default",
   "Open & interoperable",
   "Human in the loop",
   "Auditable operations",
 ];
+export const principles = defineContent("toBe.principles", principles__base);
+

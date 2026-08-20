@@ -1,3 +1,4 @@
+import { copy } from "@/content/sectionCopy";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -456,13 +457,13 @@ export function AsIsAssessment() {
         <header ref={sectionHeaderRef}>
           <p className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.22em] text-ey-green-deep">
             <span aria-hidden className="h-3 w-6 shrink-0 rounded-full bg-ey-yellow" />
-            Section 05
+            {copy.asIs.eyebrow}
           </p>
           <h2 className="mt-1 text-[2.75rem] font-semibold leading-[1.02] text-ey-green-deep">
-            As-Is Physical Security Assessment
+            {copy.asIs.heading}
           </h2>
           <p className="mt-1 text-lg leading-[1.25] text-muted-foreground">
-            EY would assess the plant&apos;s physical, technological and operational security posture — on site and on record.
+            {copy.asIs.lead}
           </p>
         </header>
 

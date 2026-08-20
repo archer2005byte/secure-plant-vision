@@ -1,9 +1,11 @@
+import { copy } from "@/content/sectionCopy";
+import { defineContent } from "@/content/contentStore";
 import { FileCheck2, GitBranch, ShieldCheck, Target, Zap } from "lucide-react";
 
 import { navigateToSection } from "./DeckNavigation";
 import "./WhyEy.css";
 
-const capabilities = [
+const capabilities__base = [
   {
     number: "01",
     icon: Zap,
@@ -29,14 +31,18 @@ const capabilities = [
     description: "Pilot-to-fleet delivery with gates, evidence, escalation and ownership.",
   },
 ] as const;
+const capabilities = defineContent("whyEy.capabilities", capabilities__base);
 
-const outcomes = [
+
+const outcomes__base = [
   "Decision-ready design",
   "Procurement-ready package",
   "Implementation-ready governance",
 ] as const;
+const outcomes = defineContent("whyEy.outcomes", outcomes__base);
 
-const evidenceSpans = [
+
+const evidenceSpans__base = [
   "Power & utilities",
   "Surveillance programmes",
   "Command-centre design",
@@ -46,6 +52,8 @@ const evidenceSpans = [
   "India public sector",
   "Major infrastructure PMO",
 ] as const;
+const evidenceSpans = defineContent("whyEy.evidenceSpans", evidenceSpans__base);
+
 
 function Capability({ index }: { index: number }) {
   const capability = capabilities[index]!;
@@ -81,17 +89,16 @@ export function WhyEy() {
           <div className="min-w-0">
             <p className="why-ey-eyebrow">
               <span aria-hidden="true" />
-              SECTION 09
+              {copy.whyEy.eyebrow}
             </p>
-            <h2>EY brings the four capabilities that turn architecture into delivery</h2>
+            <h2>{copy.whyEy.heading}</h2>
             <p className="why-ey-subtitle">
-              Domain context, converged security design, procurement engineering and programme
-              governance operate as one delivery system—not four disconnected workstreams.
+              {copy.whyEy.lead}
             </p>
           </div>
 
           <a href="#credentials" onClick={handleCredentialsClick} className="why-ey-cta">
-            View evidence base
+            {copy.whyEy.cta}
           </a>
         </header>
 

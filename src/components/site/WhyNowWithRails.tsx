@@ -1,9 +1,11 @@
+import { copy } from "@/content/sectionCopy";
+import { defineContent } from "@/content/contentStore";
 import { useState } from "react";
 import { ChevronRight, Newspaper, ShieldCheck, X } from "lucide-react";
 import { WhyNow } from "./WhyNow";
 import "./WhyNowWithRails.css";
 
-const incidents = [
+const incidents__base = [
   {
     tag: "INTRUSION / THEFT",
     place: "Ranchi · Mar 2026",
@@ -37,8 +39,10 @@ const incidents = [
     source: "Reuters / AP",
   },
 ];
+const incidents = defineContent("whyNow.incidents", incidents__base);
 
-const standards = [
+
+const standards__base = [
   {
     code: "ASIS PAP-2021",
     label: "Physical Asset Protection",
@@ -70,8 +74,10 @@ const standards = [
       "North American electric-sector standard requiring identification and protection of critical transmission facilities against physical attack. Relevant as a sector-specific benchmark for consequence-based physical-security planning.",
   },
 ] as const;
+const standards = defineContent("whyNow.standards", standards__base);
 
-const indiaContext = [
+
+const indiaContext__base = [
   {
     code: "CEA Technical Standards 2022",
     label: "Plant & electrical infrastructure",
@@ -97,6 +103,8 @@ const indiaContext = [
       "Power-sector cybersecurity guidance covering governance, monitoring, incident management and protection of critical systems. Included here only where physical-security systems connect with digital and OT environments.",
   },
 ] as const;
+const indiaContext = defineContent("whyNow.indiaContext", indiaContext__base);
+
 
 type DetailCard = { title: string; subtitle?: string; body: string; source?: string; side: "left" | "right" };
 
@@ -123,13 +131,13 @@ export function WhyNowWithRails() {
           <header>
             <p className="flex items-center gap-3 text-base font-semibold uppercase tracking-[0.22em] text-ey-green-deep">
               <span aria-hidden className="h-3 w-1.5 shrink-0 rounded-sm bg-ey-yellow" />
-              Section 02
+              {copy.whyNow.eyebrow}
             </p>
             <h2 className="text-[2.25rem] font-semibold leading-tight text-ey-green-deep">
-              Why plant security architecture must change now
+              {copy.whyNow.heading}
             </h2>
             <p className="mt-1 text-base leading-[1.3] text-muted-foreground">
-              Exposure is widening, plant risk remains uneven, and security performance is becoming measurable.
+              {copy.whyNow.lead}
             </p>
           </header>
           <div aria-hidden="true" />
