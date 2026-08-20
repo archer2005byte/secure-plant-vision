@@ -1,3 +1,4 @@
+import { defineContent } from "@/content/contentStore";
 import {
   AlertTriangle,
   BarChart3,

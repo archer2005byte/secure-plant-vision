@@ -1,3 +1,4 @@
+import { defineContent } from "@/content/contentStore";
 import type { LucideIcon } from "lucide-react";
 import {
   Building2,
@@ -25,11 +26,13 @@ import {
 
 export type PlantType = "thermal" | "hydro" | "solar";
 
-export const plantTypes: Array<{ id: PlantType; label: string }> = [
+const plantTypes__base: Array<{ id: PlantType; label: string }> = [
   { id: "thermal", label: "Thermal" },
   { id: "hydro", label: "Hydro" },
   { id: "solar", label: "Solar / BESS" },
 ];
+export const plantTypes = defineContent("plant.plantTypes", plantTypes__base);
+
 
 export type PlantBlock = {
   id: string;
@@ -44,19 +47,23 @@ export type PlantBlock = {
   shape: { x: number; y: number; w: number; h: number };
 };
 
-export const zoneMeta: Record<PlantBlock["zone"], { label: string; fill: string; border: string }> = {
+const zoneMeta__base: Record<PlantBlock["zone"], { label: string; fill: string; border: string }> = {
   A: { label: "Perimeter & access", fill: "#D0E8FA", border: "#1269AC" },
   B: { label: "Generation assets", fill: "#D2F4DC", border: "#228941" },
   C: { label: "Utilities & continuity", fill: "#FFD9D7", border: "#E80D00" },
   D: { label: "People, digital & off-site", fill: "#E5E5EC", border: "#494965" },
 };
+export const zoneMeta = defineContent("plant.zoneMeta", zoneMeta__base);
+
 
 /** Zone B reads differently when there is no fuel chain. */
-export const zoneBLabel: Record<PlantType, string> = {
+const zoneBLabel__base: Record<PlantType, string> = {
   thermal: "Generation assets",
   hydro: "Generation assets",
   solar: "Generation assets",
 };
+export const zoneBLabel = defineContent("plant.zoneBLabel", zoneBLabel__base);
+
 
 const A = zoneMeta.A.label;
 const C = zoneMeta.C.label;
@@ -636,11 +643,13 @@ const solarCore: PlantBlock[] = [
   ),
 ];
 
-export const plantBlocksByType: Record<PlantType, PlantBlock[]> = {
+const plantBlocksByType__base: Record<PlantType, PlantBlock[]> = {
   thermal: [perimeter, ...commonBlocks, ...thermalCore],
   hydro: [perimeter, ...commonBlocks, ...hydroCore],
   solar: [perimeter, ...commonBlocks, ...solarCore],
 };
+export const plantBlocksByType = defineContent("plant.blocksByType", plantBlocksByType__base);
+
 
 /** Default (thermal) set, kept for convenience. */
 export const plantBlocks = plantBlocksByType.thermal;

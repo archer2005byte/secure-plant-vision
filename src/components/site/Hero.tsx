@@ -1,3 +1,4 @@
+import { defineContent } from "@/content/contentStore";
 import { ArrowRight, BarChart3, ShieldCheck, Siren, Users } from "lucide-react";
 import heroImage from "@/assets/hero-power-plant.jpg";
 

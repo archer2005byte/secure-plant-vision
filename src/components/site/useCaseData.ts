@@ -1,3 +1,4 @@
+import { defineContent } from "@/content/contentStore";
 export type UseCase = {
   id: number;
   name: string;
@@ -18,7 +19,7 @@ export const groupOrder = [
   "System integrity and investigation",
 ];
 
-export const useCases: UseCase[] = [
+const useCases__base: UseCase[] = [
   {
     id: 1,
     name: "Perimeter intrusion",
@@ -330,3 +331,5 @@ export const useCases: UseCase[] = [
     response: ["Define time and area window", "Attribute / appearance search", "Assemble chain-of-custody clip set", "Close case in incident register"],
   },
 ];
+export const useCases = defineContent("useCases.items", useCases__base);
+

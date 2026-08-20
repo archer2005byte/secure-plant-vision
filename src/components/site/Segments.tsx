@@ -1,3 +1,4 @@
+import { defineContent } from "@/content/contentStore";
 import {
   BarChart3,
   Building2,

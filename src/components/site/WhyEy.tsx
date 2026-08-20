@@ -1,3 +1,4 @@
+import { defineContent } from "@/content/contentStore";
 import { FileCheck2, GitBranch, ShieldCheck, Target, Zap } from "lucide-react";
 
 import { navigateToSection } from "./DeckNavigation";

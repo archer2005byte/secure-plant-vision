@@ -1,3 +1,4 @@
+import { defineContent } from "@/content/contentStore";
 import { useState } from "react";
 import { ChevronRight, Newspaper, ShieldCheck, X } from "lucide-react";
 import { WhyNow } from "./WhyNow";

@@ -1,3 +1,4 @@
+import { defineContent } from "@/content/contentStore";
 import { ArrowRight, ClipboardCheck, DraftingCompass, Rocket, Target } from "lucide-react";
 
 import "./ClosingCta.css";

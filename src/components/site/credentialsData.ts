@@ -1,3 +1,4 @@
+import { defineContent } from "@/content/contentStore";
 export type CredentialCategory =
   | "power"
   | "safecity"
@@ -15,7 +16,7 @@ export type CategoryMeta = {
   text: string;
 };
 
-export const categories: CategoryMeta[] = [
+const categories__base: CategoryMeta[] = [
   { id: "power", label: "Power sector", short: "Power", dot: "fill-ey-yellow", text: "text-ey-yellow" },
   { id: "safecity", label: "Safe city & statewide surveillance", short: "Safe city", dot: "fill-ey-coral", text: "text-ey-coral" },
   { id: "iccc", label: "ICCC & smart city", short: "ICCC", dot: "fill-ey-amber", text: "text-ey-amber" },
@@ -24,6 +25,8 @@ export const categories: CategoryMeta[] = [
   { id: "police", label: "Police & large-scale surveillance", short: "Police / large-scale", dot: "fill-white", text: "text-white" },
   { id: "cdrone", label: "Counter-drone & specialised", short: "Counter-drone", dot: "fill-ey-gold", text: "text-ey-gold" },
 ];
+export const categories = defineContent("credentials.categories", categories__base);
+
 
 export type Programme = {
   id: string;
@@ -38,7 +41,7 @@ export type Programme = {
   dy?: number;
 };
 
-export const programmes: Programme[] = [
+const programmes__base: Programme[] = [
   // Power sector
   {
     id: "mspgcl",
@@ -225,6 +228,8 @@ export const programmes: Programme[] = [
     lng: 74.84,
   },
 ];
+export const programmes = defineContent("credentials.programmes", programmes__base);
+
 
 export const powerEngagements = [
   {
