@@ -341,7 +341,7 @@ function ScenarioDetail({ scenario }: { scenario: UseCase }) {
 
 export function UseCases() {
   const [activeCategory, setActiveCategory] = useState<CategoryId>(categories[0].id);
-  const [activeScenarioId, setActiveScenarioId] = useState(categories[0].scenarioIds[0]);
+  const [activeScenarioId, setActiveScenarioId] = useState<number>(categories[0].scenarioIds[0]);
   const [stickyHeaderHeight, setStickyHeaderHeight] = useState(98);
   const [sectionHeaderHeight, setSectionHeaderHeight] = useState(105);
   const sectionHeaderRef = useRef<HTMLElement | null>(null);

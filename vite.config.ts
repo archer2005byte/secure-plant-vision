@@ -6,7 +6,7 @@
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
-const githubPagesBase = process.env.VITE_PUBLIC_BASE || "/secure-plant-vision/";
+const githubPagesBase = process.env['VITE_PUBLIC_BASE'] || "/secure-plant-vision/";
 
 export default defineConfig({
   // GitHub Pages serves static files only; keep TanStack Start's native output so
