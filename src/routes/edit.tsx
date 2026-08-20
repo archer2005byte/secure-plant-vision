@@ -56,18 +56,33 @@ function groupLabel(path: string) {
   return `${humanisePath(namespace ?? "")}${second && !/^\d+$/.test(second) ? ` / ${humanisePath(second)}` : ""}`;
 }
 
+type PublishState = "idle" | "publishing" | "done";
+type PublishResult = { commitUrl: string; actionsUrl: string; commitSha: string };
+
 function EditorPage() {
   const version = useContentVersion();
   const [query, setQuery] = useState("");
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [canPublish, setCanPublish] = useState(false);
+  const [publishState, setPublishState] = useState<PublishState>("idle");
+  const [publishResult, setPublishResult] = useState<PublishResult | null>(null);
+  const [publishError, setPublishError] = useState<string | null>(null);
+
+  const runPublish = useServerFn(publishDeck);
 
   const fields = useMemo(() => contentStore.fields(), [version]);
 
   useEffect(() => {
     contentStore.loadDraft();
+    // The GitHub Pages copy is served from /<repo>/ and has no server behind it,
+    // so one-click publishing is only offered where a server function can run.
+    const onPages =
+      basePath !== "/" && window.location.pathname.startsWith(basePath);
+    setCanPublish(!onPages);
   }, []);
+
 
   const groups = useMemo(() => {
     const needle = query.trim().toLowerCase();
