@@ -304,7 +304,7 @@ function ScenarioDetail({ scenario }: { scenario: UseCase }) {
             className="scenario-response-line absolute left-[12.5%] right-[12.5%] top-[13px] z-0 hidden h-px bg-ey-yellow/50 lg:block"
           />
           {scenario.response.map((step, index) => {
-            const stage = responseStages[index] ?? responseStages[responseStages.length - 1];
+            const stage = (responseStages[index] ?? responseStages[responseStages.length - 1])!;
             const StageIcon = stage.icon;
             return (
               <li

@@ -38,8 +38,8 @@ export function SiteNav() {
   const [jumpValue, setJumpValue] = useState("");
   const [jumpInvalid, setJumpInvalid] = useState(false);
   const activeView = useActivePresentationView();
-  const activeViewIndex = sectionIds.indexOf(activeView);
-  const currentSectionNumber = sectionNumberForView(activeView);
+  const activeViewIndex = sectionIds.indexOf(activeView as SectionId);
+  const currentSectionNumber = sectionNumberForView(activeView as SectionId);
   const credentialsView =
     activeView === "credentials" ? "1/2" : activeView === "credentials-power" ? "2/2" : null;
   const progress = ((activeViewIndex + 1) / sectionIds.length) * 100;
