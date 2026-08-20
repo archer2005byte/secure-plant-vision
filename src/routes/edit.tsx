@@ -108,6 +108,29 @@ function EditorPage() {
 
   const overridesJson = JSON.stringify(contentStore.getOverrides(), null, 2);
 
+  const publish = async () => {
+    setPublishState("publishing");
+    setPublishError(null);
+    setPublishResult(null);
+    try {
+      const result = await runPublish({
+        data: {
+          overrides: contentStore.getOverrides(),
+          message: `Update deck content (${changedCount} text change${changedCount === 1 ? "" : "s"})`,
+        },
+      });
+      contentStore.saveDraft();
+      setPublishResult(result);
+      setPublishState("done");
+      window.setTimeout(() => setPublishState("idle"), 6000);
+    } catch (error) {
+      setPublishError(error instanceof Error ? error.message : "Publishing failed.");
+      setPublishState("idle");
+    }
+  };
+
+
+
   const download = () => {
     const blob = new Blob([`${overridesJson}\n`], { type: "application/json" });
     const url = URL.createObjectURL(blob);
